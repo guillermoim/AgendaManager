@@ -1,5 +1,12 @@
 import pandas as pd
 
+
+#TODO: The following function goes out
+
+def indetify_action(input):
+    return 'add'
+
+
 class Appointment():
 
     '''
