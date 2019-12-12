@@ -9,7 +9,7 @@ from collections import Counter
 
 def speech_recognition():
     # obtain audio from the microphone
-    print('\tListening...')
+    print('\t(Listening...)')
     r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)
@@ -244,6 +244,90 @@ def fill_new_appointment(app, text):
         app.startTime = startTime
     if endTime != '':
         app.endTime = endTime
+
+def get_verb_idx(list_tokens):
+    cnt = 0
+    idx = None
+    for item in list_tokens:
+        #Add or delete can be written with another verb that can be ROOT, therefore we take into account 'xcomp' as: I want to add an appointment.
+        if item[-2]=='xcomp' or item[-2]=='ROOT' and item[-3] in ('VERB', 'AUX'):
+            idx = cnt
+            #verbs_tokens.append(item)
+        cnt+=1
+    #Number to return the corresponding row of the proper token. Watch out cnt+=1
+    if idx != None:
+        return list_tokens[idx][1], idx
+    else:
+        return '', idx
+
+def affirmative_and_tags(text_speech):
+    list_tokens, list_ent = parsing(text_speech)
+    verb, idx = get_verb_idx(list_tokens)
+
+    tokens_len = len(list_tokens)
+
+    affirmative = is_affirmative(text_speech)
+
+    if verb != '':
+        pass
+    else:
+        pass
+
+    return verb
+
+def detect_tags(list_tokens, verb_idx):
+    res = []
+    if verb_idx is None:
+        for i in range(1, len(list_tokens)):
+            token = list_tokens[i]
+            pos = token[2]
+            if pos in ('ADJ', 'NOUN'):
+                res.append(token[0])
+    else:
+        for i in range(verb_idx+1, len(list_tokens)):
+            token = list_tokens[i]
+            pos = token[2]
+            if pos in ('ADJ', 'NOUN'):
+                res.append(token[0])
+
+    return ':'.join(res)
+
+def is_aff_or_neg(text):
+    res1 = is_affirmative(text)
+    res2 = is_negation(text)
+
+    res = ''
+
+    if res1 and not res2:
+        res = 'AFF'
+    elif not res1 and res2:
+        res = 'NEG'
+    elif not res1 and not res2:
+        res = 'SPECIFY'
+    elif res1 and res1:
+        res = 'CLARIFY'
+
+    return res
+
+def is_affirmative(text):
+    affirmative_words = ['yes', 'sure']
+    res = []
+    for word in affirmative_words:
+        idx = text.find(word)
+        res.append(idx)
+
+    res = [it >= 0 for it in res]
+    return any(res)
+
+def is_negation(text):
+    negation_words = ['no']
+    res = []
+    for word in negation_words:
+        idx = text.find(word)
+        res.append(idx)
+
+    res = [it >= 0 for it in res]
+    return any(res)
 
 def identify_action(text_speech):
     adding_verbs = ('add', 'create')

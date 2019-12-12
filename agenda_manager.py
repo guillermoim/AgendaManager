@@ -14,7 +14,7 @@ class Appointment():
         poder operar con ellos de forma fácil.
     '''
 
-    def __init__(self, date = None, startTime = None, endTime = None, subject = None ,tags = None, priority = 'low'):
+    def __init__(self, date = None, startTime = None, endTime = None, subject = None ,tags = None, priority = None):
         self.date = date
         self.startTime = startTime
         self.endTime = endTime
@@ -35,12 +35,14 @@ def conflict_appointments(agenda, new_appointment):
         adter the new app start time and whose startTime is later than the new appointment
         starts.
     '''
-    return agenda[((agenda.date == new_appointment.date) &
+    res = agenda[((agenda.date == new_appointment.date) &
     (agenda.startTime <= new_appointment.startTime) &
     (agenda.endTime >= new_appointment.startTime)) |
     (agenda.date == new_appointment.date) &
     (agenda.startTime >= new_appointment.startTime) &
     (agenda.startTime <= new_appointment.endTime) ]
+
+    return df_to_list(res)
 
 
 def filter_by_date(agenda, start_date, end_date):
@@ -60,3 +62,16 @@ def add_appointment(agenda, appointment):
 
 def update_agenda(agenda, file):
     agenda.to_csv(file, index = False)
+
+def pd_to_appointment(df_row):
+    return Appointment(df_row.date, df_row.startTime, df_row.endTime, df_row.subject, df_row.tags, df_row.priority)
+
+def df_to_list(df):
+
+    res = []
+
+    for index, row in df.iterrows():
+        aux = pd_to_appointment(row)
+        res.append(aux)
+
+    return res

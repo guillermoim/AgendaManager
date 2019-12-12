@@ -1,16 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Dec  8 20:04:08 2019
-
-@author: Mario Acera
-"""
 import pyttsx3
 
 def init_engine():
 
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
-
 
     rate = engine.getProperty('rate')   # getting details of current speaking rate
     engine.setProperty('rate', 200)     # setting up new voice rate
