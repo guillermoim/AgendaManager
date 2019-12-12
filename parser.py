@@ -346,3 +346,18 @@ def identify_action(text_speech):
         res = 'error'
 
     return res
+
+def reschedule_or_overwrite(text):
+    re_verbs = ('reschedule', 'rearrage')
+    over_verbs = ('overwrite', 'replace')
+
+    verb = searching_verb(text)
+
+    res = ''
+
+    if verb in re_verbs:
+        res = 'reschedule'
+    elif verb in over_verb:
+        res = 'replace'
+
+    return res

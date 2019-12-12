@@ -42,7 +42,7 @@ def conflict_appointments(agenda, new_appointment):
     (agenda.startTime >= new_appointment.startTime) &
     (agenda.startTime <= new_appointment.endTime) ]
 
-    return df_to_list(res)
+    return res
 
 
 def filter_by_date(agenda, start_date, end_date):
@@ -75,3 +75,6 @@ def df_to_list(df):
         res.append(aux)
 
     return res
+
+def remove_apps_from_agenda(agenda, to_remove):
+    return agenda[~agenda.isin(to_remove)].dropna()

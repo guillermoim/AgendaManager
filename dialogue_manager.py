@@ -12,8 +12,6 @@ def main():
     file = 'agenda.csv'
     agenda = AM.import_agenda(file)
 
-    first_flag = True
-
     # Stop Condition to exit the while loop
     stop_condition = False
 
@@ -22,6 +20,8 @@ def main():
     first_line = 'Welcome to your agenda manager!'
     print('MACHINE: '+first_line)
     TTS.read(vengine, first_line)
+
+    flag_first_conflict = True
 
     while(True):
 
@@ -59,8 +59,9 @@ def main():
                 print('YOU: '+input)
                 date = parser.searching_date(input)
                 if date == '':
-                    print('Sorry, I did not hear a date!')
-                    continue
+                    output = 'Sorry, I did not hear a date!'
+                    print('MACHINE: '+output)
+                    TTS.read(vengine, output)
                 else:
                     new_appointment.date = date
 
@@ -73,7 +74,9 @@ def main():
                 print('YOU: '+input)
                 startTime = parser.get_simple_time(input)
                 if startTime == '':
-                    print('I am sorry, I expect you to say a time!')
+                    output = 'I am sorry, I expect you to say a time!'
+                    print('MACHINE: '+output)
+                    TTS.read(vengine, output)
                 else:
                     new_appointment.startTime = startTime
                 continue
@@ -87,7 +90,9 @@ def main():
                 print('YOU: '+input)
                 endTime = parser.get_simple_time(input)
                 if endTime == '':
-                    print('I am sorry, I expect you to say a time!')
+                    output = 'I am sorry, I expect you to say a time!'
+                    print('MACHINE: '+output)
+                    TTS.read(vengine, output)
                 else:
                     new_appointment.endTime = endTime
                 continue
@@ -108,7 +113,7 @@ def main():
                 print('MACHINE: '+output)
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
-                print(input)
+                print('YOU: '+input)
                 new_appointment.subject = input
 
             # If there are no tags?
@@ -117,7 +122,7 @@ def main():
                 print('MACHINE: '+output)
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
-                print(input)
+                print('YOU: '+input)
 
                 aux = parser.is_aff_or_neg(input)
 
@@ -131,6 +136,7 @@ def main():
                         TTS.read(vengine, output)
                         print('MACHINE: '+output)
                         input = parser.speech_recognition()
+                        print('YOU: '+input)
                         parsed = parser.parsing(input)
                         verb, verb_idx = parser.get_verb_idx(parsed[0])
                         tags = parser.detect_tags(parsed[0], verb_idx)
@@ -152,6 +158,7 @@ def main():
                 print('MACHINE: '+output)
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
+                print('YOU: '+input)
                 aux = parser.is_aff_or_neg(input)
                 if aux == 'NEG':
                     new_appointment.priority = 'low'
@@ -160,6 +167,7 @@ def main():
                     print('MACHINE: '+output)
                     TTS.read(vengine, output)
                     input = parser.speech_recognition()
+                    print('YOU: '+input)
                     aux = parser.is_aff_or_neg(input)
                     if aux == 'NEG':
                         new_appointment.priority = 'med'
@@ -173,22 +181,58 @@ def main():
             print('MACHINE: '+ output)
             TTS.read(vengine, output)
             state = None
+            new_appointment = None
+            conflict = None
             continue
 
         if state == 'conflict':
-            output = gen.read_conflict(conflict)
+
+            if flag_first_conflict:
+                output = gen.read_conflict(AM.df_to_list(conflict))
+                print('MACHINE: '+ output)
+                TTS.read(vengine, output)
+
+            output = 'Do you want to overwrite the existing appointments or reschedule the new one?'
             print('MACHINE: '+ output)
             TTS.read(vengine, output)
 
-            output = 'Do you want to overwrite the existing appointments or \
-            reschedule the new one?'
-            print('MACHINE: '+ output)
-            TTS.read(vengine, output)
-            
-            break
-            pass
+            input = parser.speech_recognition()
+            print('YOU: '+input)
+            aux = parser.reschedule_or_overwrite(input)
+
+            if aux == 'reschedule':
+                new_appointment.date = None
+                new_appointment.startTime = None
+                new_appointment.endTime = None
+
+                state = 'add'
+                conflict = None
+
+                flag_first_conflict = True
+
+                continue
+
+            elif aux == 'overwrite':
+                agenda = AM.remove_apps_from_agenda(agenda, conflict)
+                AM.update_agenda(agenda, file)
+
+                state = 'add'
+                conflict = None
+
+                flag_first_conflict = True
+
+                continue
+
+            else:
+                output = 'Sorry, I did not understand you'
+                print('MACHINE: '+ output)
+                TTS.read(vengine, output)
+                flag_first_conflict = False
+                continue
+
 
         if state == 'query':
+            # TODO
             pass
 
         if state == 'rmv':
@@ -204,6 +248,3 @@ def main():
 
         if stop_condition:
             break
-
-
-    print(Fore.WHITE)
