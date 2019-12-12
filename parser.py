@@ -9,6 +9,7 @@ from collections import Counter
 
 def speech_recognition():
     # obtain audio from the microphone
+    print('\tListening...')
     r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)
@@ -69,7 +70,7 @@ def searching_verb(text):
     verbs_tokens=[]
     for item in list_tokens:
         #Add or delete can be written with another verb that can be ROOT, therefore we take into account 'xcomp' as: I want to add an appointment.
-        if (item[-2]=='xcomp' or  item[-2]=='ROOT') and item[-3] in ('VERB'):
+        if item[-2]=='xcomp' or  item[-2]=='ROOT' and item[-3] in ('VERB'):
             idx = cnt
             verbs_tokens.append(item)
             cnt+=1
@@ -173,13 +174,20 @@ def searching_time(text):
 
     return res
 
+def get_simple_time(text):
+    time_ent = searching_time(text)
+    if time_ent=='':
+        return ''
+    else:
+        return get_from_to_time(time_ent)[0]
+
 def get_from_to_time(time_entity):
     text = time_entity[0]
     parts = text.split('to')
     from_time = get_time(parts[0])
     to_time = ''
     if len(parts) > 1:
-        to_time = get_time(parts[0])
+        to_time = get_time(parts[1])
     return from_time, to_time
 
 def get_time(time_string):
@@ -208,10 +216,14 @@ def format_time(time, period):
     elif period == 'p.m.':
         if len(time) > 1:
             hour = str(int('{:02d}'.format(int(time[0]))) + 12)
+            if hour == '24':
+                hour = '12'
             min = time[1]
             res = hour+':'+min
         else:
             hour = str(int('{:02d}'.format(int(time[0]))) + 12)
+            if hour == '24':
+                hour = '12'
             min = '00'
             res = hour+':'+min
 
@@ -234,6 +246,19 @@ def fill_new_appointment(app, text):
         app.endTime = endTime
 
 def identify_action(text_speech):
-    list_tokens, list_ent = parsing(text_speech)
-    verbs = searching_verb(list_tokens)
-    return verbs
+    adding_verbs = ('add', 'create')
+    query_verbs = ('tell', 'know', 'get')
+    delete_verbs = ('delte', 'remove', 'clear')
+
+    verb = searching_verb(text_speech)
+
+    if verb in adding_verbs:
+        res = 'add'
+    elif verb in query_verbs:
+        res = 'query'
+    elif verb in delete_verbs:
+        res = 'rmv'
+    else:
+        res = 'error'
+
+    return res

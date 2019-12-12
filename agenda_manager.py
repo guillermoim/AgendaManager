@@ -14,7 +14,7 @@ class Appointment():
         poder operar con ellos de forma fácil.
     '''
 
-    def __init__(self, date = None, startTime = None, endTime = None, subject = None ,tags = [], priority = 'low'):
+    def __init__(self, date = None, startTime = None, endTime = None, subject = None ,tags = None, priority = 'low'):
         self.date = date
         self.startTime = startTime
         self.endTime = endTime
@@ -50,50 +50,13 @@ def filter_by_tags(agenda, tag):
     return agenda[agenda.tags.str.contains(tag)]
 
 def appointment_to_pd(a):
-    return pd.DataFrame([a.date, a.startTime, a.endTime, a.subject, a.tags, a.priority])
+    cols = ['date','startTime','endTime','subject','tags','priority']
+    return pd.DataFrame([[a.date, a.startTime, a.endTime, a.subject, a.tags, a.priority]], columns = cols)
 
 def add_appointment(agenda, appointment):
     res = appointment_to_pd(appointment)
-    agenda.append(res, ignoreIndex = True)
+    print(res)
+    return agenda.append(res, ignore_index = True)
 
 def update_agenda(agenda, file):
-    agenda.to_csv(file)
-
-
-# Funciones de testeo muy cutronas!
-def test1():
-    print('Sloppy Testing with both cases')
-
-    file = 'agenda.csv'
-    agenda = import_agenda(file)
-
-    print('Here I create an agenda with an existing appointment \
-    the 2019-12-06 from 13:30:00 to 14:00:00')
-
-    print('Case 1: A new appointment the same date from 13:45:00 to 13:50:00')
-    app = Appointment(date='2019-12-06', startTime='13:45:00', endTime='14:50:00')
-    print('\n\t CONFLICTIVE EXISTING APPOINTMENTS:')
-    print(conflict_appointments(agenda, app))
-
-    print('Case 2: A new appointment the same date from 13:15:00 to 13:50:00')
-    app = Appointment(date='2019-12-06', startTime='13:15:00', endTime='14:50:00')
-    print('\n\t CONFLICTIVE EXISTING APPOINTMENTS:')
-    print(len(conflict_appointments(agenda, app)))
-
-def test2():
-    print('Sloppy Testing with both cases')
-    file = 'agenda.csv'
-    agenda = import_agenda(file)
-
-    print(filter_by_tags(agenda, 'important').to_numpy())
-
-def test3():
-    app = Appointment(date='2019-12-08', startTime='13:45:00',
-    endTime='14:50:00', subject = 'Test 2')
-    print('')
-
-
-if __name__ == '__main__':
-
-    test1()
-    #test2()
+    agenda.to_csv(file, index = False)
