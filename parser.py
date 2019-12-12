@@ -358,6 +358,6 @@ def reschedule_or_overwrite(text):
     if verb in re_verbs:
         res = 'reschedule'
     elif verb in over_verbs:
-        res = 'replace'
+        res = 'overwrite'
 
     return res
