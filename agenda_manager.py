@@ -31,12 +31,14 @@ def conflict_appointments(agenda, new_appointment):
         adter the new app start time and whose startTime is later than the new appointment
         starts.
     '''
-    res = agenda[((agenda.date == new_appointment.date) &
+    # TODO:
+    res = agenda[
+    ((agenda.date == new_appointment.date) &
     (agenda.startTime <= new_appointment.startTime) &
     (agenda.endTime >= new_appointment.startTime)) |
-    (agenda.date == new_appointment.date) &
+    ((agenda.date == new_appointment.date) &
     (agenda.startTime >= new_appointment.startTime) &
-    (agenda.startTime <= new_appointment.endTime) ]
+    (agenda.startTime < new_appointment.endTime)) ]
 
     return res
 
