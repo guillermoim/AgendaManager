@@ -12,8 +12,8 @@ def main():
     file = 'agenda.csv'
     agenda = AM.import_agenda(file)
 
-    # Stop Condition to exit the while loop
-    stop_condition = False
+    # Stop Condition to exit the while loop. We use directly after the input with an if (not needed).
+    #stop_condition = False
 
     vengine = TTS.init_engine()
 
@@ -277,6 +277,6 @@ def main():
             TTS.read(vengine, output)
             state = None
             continue
-
-        if stop_condition:
-            break
+        #Not needed, we use the break after the input.
+        #if stop_condition:
+            #break
