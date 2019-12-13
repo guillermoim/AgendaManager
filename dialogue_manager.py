@@ -44,6 +44,9 @@ def main():
                 state = 'query'
             elif op == 'rmv':
                 state == 'rmv'
+            elif input=='stop':
+                print("Thanks for using your favourite agenda manager. Good bye!")
+                break
             elif op == 'error':
                 state = 'error'
 
@@ -57,6 +60,9 @@ def main():
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
                 print('YOU: '+input)
+                if input=='stop':
+                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    break
                 date = parser.searching_date(input)
                 if date == '':
                     output = 'Sorry, I did not hear a date!'
@@ -64,6 +70,7 @@ def main():
                     TTS.read(vengine, output)
                 else:
                     new_appointment.date = date
+                
 
             # If the start time is empty ask for the start time
             if new_appointment.startTime is None:
@@ -72,6 +79,9 @@ def main():
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
                 print('YOU: '+input)
+                if input=='stop':
+                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    break
                 startTime = parser.get_simple_time(input)
                 if startTime == '':
                     output = 'I am sorry, I expect you to say a time!'
@@ -88,6 +98,9 @@ def main():
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
                 print('YOU: '+input)
+                if input=='stop':
+                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    break
                 endTime = parser.get_simple_time(input)
                 if endTime == '':
                     output = 'I am sorry, I expect you to say a time!'
@@ -123,6 +136,9 @@ def main():
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
                 print('YOU: '+input)
+                if input=='stop':
+                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    break
 
                 aux = parser.is_aff_or_neg(input)
 
@@ -137,6 +153,9 @@ def main():
                         print('MACHINE: '+output)
                         input = parser.speech_recognition()
                         print('YOU: '+input)
+                        if input=='stop':
+                            print("Thanks for using your favourite agenda manager. Good bye!")
+                            break
                         parsed = parser.parsing(input)
                         verb, verb_idx = parser.get_verb_idx(parsed[0])
                         tags = parser.detect_tags(parsed[0], verb_idx)
@@ -159,6 +178,9 @@ def main():
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
                 print('YOU: '+input)
+                if input=='stop':
+                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    break
                 aux = parser.is_aff_or_neg(input)
                 if aux == 'NEG':
                     new_appointment.priority = 'low'
@@ -168,6 +190,9 @@ def main():
                     TTS.read(vengine, output)
                     input = parser.speech_recognition()
                     print('YOU: '+input)
+                    if input=='stop':
+                        print("Thanks for using your favourite agenda manager. Good bye!")
+                        break
                     aux = parser.is_aff_or_neg(input)
                     if aux == 'NEG':
                         new_appointment.priority = 'med'
@@ -198,6 +223,9 @@ def main():
 
             input = parser.speech_recognition()
             print('YOU: '+input)
+            if input=='stop':
+                print("Thanks for using your favourite agenda manager. Good bye!")
+                break
             aux = parser.reschedule_or_overwrite(input)
 
             if aux == 'reschedule':
