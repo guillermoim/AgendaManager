@@ -1,11 +1,7 @@
 import pandas as pd
-
+from datetime import datetime
 
 #TODO: The following function goes out
-
-def indetify_action(input):
-    return 'add'
-
 
 class Appointment():
 
@@ -78,3 +74,10 @@ def df_to_list(df):
 
 def remove_apps_from_agenda(agenda, to_remove):
     return agenda[~agenda.isin(to_remove)].dropna()
+
+def get_next_appointments(agenda):
+    now = datetime.now()
+    date = now.strftime('%Y-%m-%d')
+    time = now.strftime('%H:%M')
+
+    return agenda[((agenda.date == date) & (agenda.startTime >= time)) | (agenda.date > date)]

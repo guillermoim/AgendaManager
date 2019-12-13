@@ -1,3 +1,5 @@
+import agenda_manager as AM
+
 def appointment_saved(app):
     res = 'Okay! I have saved an appointment the ' + str(app.date) \
     + ' from ' + str(app.startTime) + ' to ' + str(app.endTime) \
@@ -26,6 +28,27 @@ def read_conflict(conflict):
         if idx == len(conflict)-2:
             s+=read_appointment(app)+' and \n'
         elif idx == len(conflict)-1:
+            s+=read_appointment(app)
+
+    return s
+
+def read_appointments(agenda):
+
+    next = AM.get_next_appointments(agenda)
+    appointments = AM.df_to_list(next)
+    s = ''
+
+    if len(appointments) > 1:
+        s+='You have the following appointments coming\n'
+    else:
+        s+='You have the following appointment coming\n'
+
+    for idx, app in enumerate(appointments):
+        if idx < len(appointments)-2:
+            s+=read_appointment(app)+',\n'
+        if idx == len(appointments)-2:
+            s+=read_appointment(app)+' and \n'
+        elif idx == len(appointments)-1:
             s+=read_appointment(app)
 
     return s

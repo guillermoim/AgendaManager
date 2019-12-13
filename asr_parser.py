@@ -331,8 +331,8 @@ def is_negation(text):
 
 def identify_action(text_speech):
     adding_verbs = ('add', 'create')
-    query_verbs = ('tell', 'know', 'get')
-    delete_verbs = ('delte', 'remove', 'clear')
+    query_verbs = ('tell', 'know', 'get', 'search', 'display', 'show')
+    delete_verbs = ('delete', 'remove', 'clear')
 
     verb = searching_verb(text_speech)
 

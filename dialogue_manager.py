@@ -1,6 +1,6 @@
 import agenda_manager as AM
 import generation as gen
-import parser
+import asr_parser as parser
 from colorama import Fore
 import TTS
 
@@ -232,8 +232,12 @@ def main():
 
 
         if state == 'query':
-            # TODO
-            pass
+            output = gen.read_appointments(agenda)
+            print('MACHINE: '+ output)
+            TTS.read(vengine, output)
+
+
+            state = None
 
         if state == 'rmv':
             # TODO
