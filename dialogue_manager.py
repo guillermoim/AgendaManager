@@ -12,8 +12,8 @@ def main():
     file = 'agenda.csv'
     agenda = AM.import_agenda(file)
 
-    # Stop Condition to exit the while loop. We use directly after the input with an if (not needed).
-    #stop_condition = False
+    # Stop Condition is done every time the user says "STOP" in every state.
+
 
     vengine = TTS.init_engine()
 
@@ -45,7 +45,9 @@ def main():
             elif op == 'rmv':
                 state == 'rmv'
             elif input=='stop':
-                print("Thanks for using your favourite agenda manager. Good bye!")
+                output='Thanks for using your favourite agenda manager. Good bye!'
+                print('MACHINE:' + output)
+                TTS.read(vengine, output)
                 break
             elif op == 'error':
                 state = 'error'
@@ -61,7 +63,9 @@ def main():
                 input = parser.speech_recognition()
                 print('YOU: '+input)
                 if input=='stop':
-                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    output='Thanks for using your favourite agenda manager. Good bye!'
+                    print('MACHINE:' + output)
+                    TTS.read(vengine, output)
                     break
                 date = parser.searching_date(input)
                 if date == '':
@@ -80,7 +84,9 @@ def main():
                 input = parser.speech_recognition()
                 print('YOU: '+input)
                 if input=='stop':
-                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    output='Thanks for using your favourite agenda manager. Good bye!'
+                    print('MACHINE:' + output)
+                    TTS.read(vengine, output)
                     break
                 startTime = parser.get_simple_time(input)
                 if startTime == '':
@@ -99,7 +105,9 @@ def main():
                 input = parser.speech_recognition()
                 print('YOU: '+input)
                 if input=='stop':
-                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    output='Thanks for using your favourite agenda manager. Good bye!'
+                    print('MACHINE:' + output)
+                    TTS.read(vengine, output)
                     break
                 endTime = parser.get_simple_time(input)
                 if endTime == '':
@@ -137,7 +145,9 @@ def main():
                 input = parser.speech_recognition()
                 print('YOU: '+input)
                 if input=='stop':
-                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    output='Thanks for using your favourite agenda manager. Good bye!'
+                    print('MACHINE:' + output)
+                    TTS.read(vengine, output)
                     break
 
                 aux = parser.is_aff_or_neg(input)
@@ -154,7 +164,9 @@ def main():
                         input = parser.speech_recognition()
                         print('YOU: '+input)
                         if input=='stop':
-                            print("Thanks for using your favourite agenda manager. Good bye!")
+                            output='Thanks for using your favourite agenda manager. Good bye!'
+                            print('MACHINE:' + output)
+                            TTS.read(vengine, output)
                             break
                         parsed = parser.parsing(input)
                         verb, verb_idx = parser.get_verb_idx(parsed[0])
@@ -179,7 +191,9 @@ def main():
                 input = parser.speech_recognition()
                 print('YOU: '+input)
                 if input=='stop':
-                    print("Thanks for using your favourite agenda manager. Good bye!")
+                    output='Thanks for using your favourite agenda manager. Good bye!'
+                    print('MACHINE:' + output)
+                    TTS.read(vengine, output)
                     break
                 aux = parser.is_aff_or_neg(input)
                 if aux == 'NEG':
@@ -191,7 +205,9 @@ def main():
                     input = parser.speech_recognition()
                     print('YOU: '+input)
                     if input=='stop':
-                        print("Thanks for using your favourite agenda manager. Good bye!")
+                        output='Thanks for using your favourite agenda manager. Good bye!'
+                        print('MACHINE:' + output)
+                        TTS.read(vengine, output)
                         break
                     aux = parser.is_aff_or_neg(input)
                     if aux == 'NEG':
@@ -224,7 +240,9 @@ def main():
             input = parser.speech_recognition()
             print('YOU: '+input)
             if input=='stop':
-                print("Thanks for using your favourite agenda manager. Good bye!")
+                output='Thanks for using your favourite agenda manager. Good bye!'
+                print('MACHINE:' + output)
+                TTS.read(vengine, output)
                 break
             aux = parser.reschedule_or_overwrite(input)
 
@@ -277,6 +295,4 @@ def main():
             TTS.read(vengine, output)
             state = None
             continue
-        #Not needed, we use the break after the input.
-        #if stop_condition:
-            #break
+
