@@ -333,6 +333,7 @@ def identify_action(text_speech):
     adding_verbs = ('add', 'create')
     query_verbs = ('tell', 'know', 'get', 'search', 'display', 'show')
     delete_verbs = ('delete', 'remove', 'clear')
+    
 
     verb = searching_verb(text_speech)
 
@@ -342,14 +343,16 @@ def identify_action(text_speech):
         res = 'query'
     elif verb in delete_verbs:
         res = 'rmv'
+    # elif verb=="stop"
+    #     res="stop"
     else:
         res = 'error'
 
     return res
 
 def reschedule_or_overwrite(text):
-    re_verbs = ('reschedule', 'rearrage')
-    over_verbs = ('overwrite', 'replace')
+    re_verbs = ('reschedule', 'rearrange')
+    over_verbs = ('overwrite', 'replace','substitute')
 
     verb = searching_verb(text)
 
