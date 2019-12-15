@@ -135,6 +135,11 @@ def main():
                 TTS.read(vengine, output)
                 input = parser.speech_recognition()
                 print('YOU: '+input)
+                if input=='stop':
+                    output='Thanks for using your favourite agenda manager. Good bye!'
+                    print('MACHINE:' + output)
+                    TTS.read(vengine, output)
+                    break
                 new_appointment.subject = input
 
             # If there are no tags?
