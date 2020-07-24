@@ -1,4 +1,6 @@
-# NLI-AgendaManager
+# AgendaManager
+This is the code for the project of Natural Language Interaction, part of the Master in Intelligent Interactive Systems at UPF (year 2019/2020)
+
 - agenda_manager.py: Implements the Logic of the system.
 - dialogue_manager.py: Implements the dialogue manager.
 - generation.py: Functions to generate sentences.
