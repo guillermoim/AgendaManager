@@ -10,4 +10,7 @@ The code consists of:
     - *generation.py*: Functions to generate sentences.
     - *asr_parser.py*: Contains the function to call the ASR and the ones needed for parsing and PoS
     - *TTS.py*: Module that includes the Text-to-Speech system.
+    
+* **main.py** Just the main executable, but rather use ```source execute.sh``` or ```./execute.sh``` due to changes on the ```PYTHONPATH.
+
 The file agenda.csv keeps all the information of the agenda.
