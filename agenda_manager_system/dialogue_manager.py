@@ -3,13 +3,14 @@ import generation as gen
 import asr_parser as parser
 from colorama import Fore
 import TTS
+import os
 
 def main():
     # Global variables
     state = None
     conflict = None
     new_appointment = None
-    file = 'agenda.csv'
+    file = os.path.abspath('database/agenda.csv')
     agenda = AM.import_agenda(file)
 
     # Stop Condition is done every time the user says "STOP" in every state.
@@ -74,7 +75,7 @@ def main():
                     TTS.read(vengine, output)
                 else:
                     new_appointment.date = date
-                
+
 
             # If the start time is empty ask for the start time
             if new_appointment.startTime is None:
@@ -300,4 +301,3 @@ def main():
             TTS.read(vengine, output)
             state = None
             continue
-

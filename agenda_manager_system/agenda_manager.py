@@ -3,6 +3,9 @@ from datetime import datetime
 
 #TODO: The following function goes out
 
+def __init__():
+    pass
+
 class Appointment():
 
     '''
